@@ -48,9 +48,9 @@ public class SignUpActivity extends AppCompatActivity {
                 .map(zxcvbn::measure)
                 .map(Strength::getScore)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(strength -> {
-                    mPasswordStrengthBar.setProgress(strength);
-                    mPasswordStrengthText.setText(makeStrengthScoreText(strength));
+                .subscribe(score -> {
+                    mPasswordStrengthBar.setProgress(score);
+                    mPasswordStrengthText.setText(makeStrengthScoreText(score));
                 });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_up_button);
