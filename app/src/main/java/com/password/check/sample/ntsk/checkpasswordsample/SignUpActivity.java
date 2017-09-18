@@ -15,6 +15,9 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.nulabinc.zxcvbn.Strength;
 import com.nulabinc.zxcvbn.Zxcvbn;
 
+import java.util.List;
+import java.util.Locale;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -29,6 +32,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private ProgressBar mPasswordStrengthBar;
     private TextView mPasswordStrengthText;
+    private TextView mFeedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordStrengthBar = (ProgressBar) findViewById(R.id.password_strength);
         mPasswordStrengthText = (TextView) findViewById(R.id.password_strength_text);
+        mFeedback = (TextView) findViewById(R.id.feedback);
 
         Zxcvbn zxcvbn = new Zxcvbn();
         RxTextView.textChanges(mPasswordView)
@@ -53,12 +58,32 @@ public class SignUpActivity extends AppCompatActivity {
                     mPasswordStrengthText.setText(makeStrengthScoreText(score));
                 });
 
+        RxTextView.textChanges(mPasswordView)
+                .observeOn(Schedulers.computation())
+                .map(CharSequence::toString)
+                .map(zxcvbn::measure)
+                .map(Strength::getFeedback)
+                .map(feedback -> makeFeedBackText(feedback.getSuggestions(Locale.JAPAN)))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(feedbackText -> {
+                    if (TextUtils.isEmpty(feedbackText)) {
+                        mFeedback.setVisibility(View.GONE);
+                        return;
+                    }
+                    mFeedback.setVisibility(View.VISIBLE);
+                    mFeedback.setText(feedbackText);
+                });
+
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_up_button);
         mEmailSignInButton.setOnClickListener(view -> attemptLogin());
     }
 
     private String makeStrengthScoreText(int strength) {
         return PASSWORD_STRENGTH_SCORES[strength];
+    }
+
+    private String makeFeedBackText(List<String> suggestions) {
+        return TextUtils.join("\n", suggestions);
     }
 
     private void attemptLogin() {

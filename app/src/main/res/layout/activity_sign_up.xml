@@ -75,7 +75,14 @@
                     android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:minLines="2"/>
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/email_sign_up_button"
