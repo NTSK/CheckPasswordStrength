@@ -58,12 +58,10 @@
                 android:orientation="horizontal">
 
                 <ProgressBar
-                    android:id="@+id/password_strength"
+                    android:id="@+id/password_strength_bar"
                     style="?android:progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:max="4"
                     tools:progress="1" />

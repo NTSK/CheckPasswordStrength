@@ -42,7 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordStrengthBar = (ProgressBar) findViewById(R.id.password_strength);
+        mPasswordStrengthBar = (ProgressBar) findViewById(R.id.password_strength_bar);
         mPasswordStrengthText = (TextView) findViewById(R.id.password_strength_text);
         mFeedback = (TextView) findViewById(R.id.feedback);
 
