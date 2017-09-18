@@ -62,19 +62,19 @@
                     style="?android:progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
+                    android:layout_weight="1"
                     android:max="4"
-                    tools:progress="1"/>
+                    tools:progress="1" />
 
                 <TextView
                     android:id="@+id/password_strength_text"
-                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="4"
-                    android:minLines="2"/>
+                    android:gravity="center"
+                    android:minLines="2" />
 
             </LinearLayout>
 
@@ -82,7 +82,7 @@
                 android:id="@+id/feedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/email_sign_up_button"
