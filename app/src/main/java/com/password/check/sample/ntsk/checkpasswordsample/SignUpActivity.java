@@ -24,15 +24,15 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private static final String[] PASSWORD_STRENGTH_SCORES = new String[] {
+    private static final String[] PASSWORD_STRENGTH_MESSAGES = new String[]{
             "Weak", "Fair", "Good", "Strong", "Very Strong"
     };
 
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private ProgressBar mPasswordStrengthBar;
-    private TextView mPasswordStrengthText;
-    private TextView mFeedback;
+    private ProgressBar mStrengthProgressBar;
+    private TextView mStrengthTextView;
+    private TextView mFeedbackTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +42,9 @@ public class SignUpActivity extends AppCompatActivity {
 
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordStrengthBar = (ProgressBar) findViewById(R.id.password_strength_bar);
-        mPasswordStrengthText = (TextView) findViewById(R.id.password_strength_text);
-        mFeedback = (TextView) findViewById(R.id.feedback);
+        mStrengthProgressBar = (ProgressBar) findViewById(R.id.password_strength_bar);
+        mStrengthTextView = (TextView) findViewById(R.id.password_strength_text);
+        mFeedbackTextView = (TextView) findViewById(R.id.feedback);
 
         Zxcvbn zxcvbn = new Zxcvbn();
         RxTextView.textChanges(mPasswordView)
@@ -54,8 +54,8 @@ public class SignUpActivity extends AppCompatActivity {
                 .map(Strength::getScore)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(score -> {
-                    mPasswordStrengthBar.setProgress(score);
-                    mPasswordStrengthText.setText(makeStrengthScoreText(score));
+                    mStrengthProgressBar.setProgress(score);
+                    mStrengthTextView.setText(PASSWORD_STRENGTH_MESSAGES[score]);
                 });
 
         RxTextView.textChanges(mPasswordView)
@@ -67,19 +67,15 @@ public class SignUpActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(feedbackText -> {
                     if (TextUtils.isEmpty(feedbackText)) {
-                        mFeedback.setVisibility(View.GONE);
+                        mFeedbackTextView.setVisibility(View.GONE);
                         return;
                     }
-                    mFeedback.setVisibility(View.VISIBLE);
-                    mFeedback.setText(feedbackText);
+                    mFeedbackTextView.setVisibility(View.VISIBLE);
+                    mFeedbackTextView.setText(feedbackText);
                 });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_up_button);
         mEmailSignInButton.setOnClickListener(view -> attemptLogin());
-    }
-
-    private String makeStrengthScoreText(int strength) {
-        return PASSWORD_STRENGTH_SCORES[strength];
     }
 
     private String makeFeedBackText(List<String> suggestions) {
@@ -115,7 +111,7 @@ public class SignUpActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            Toast.makeText(this, "Successful!" , Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Successful!", Toast.LENGTH_LONG).show();
         }
     }
 

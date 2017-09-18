@@ -63,8 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:max="4"
-                    tools:progress="1" />
+                    android:max="4" />
 
                 <TextView
                     android:id="@+id/password_strength_text"
